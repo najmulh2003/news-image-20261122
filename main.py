@@ -13,4 +13,9 @@ from pathlib import Path
 src = Path(__file__).resolve().parent / "entry.png"
 out = Path(os.environ.get("MAKEFUN_OUTPUT_DIR", "/output"))
 out.mkdir(parents=True, exist_ok=True)
-shutil.copyfile(src, out / "entry.png")
+dest = out / "entry.png"
+shutil.copyfile(src, dest)
+
+# Verify the copy landed byte-for-byte before reporting success.
+assert dest.stat().st_size == src.stat().st_size
+print(f"Wrote {dest} ({dest.stat().st_size} bytes)")
